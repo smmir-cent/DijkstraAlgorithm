@@ -5,11 +5,11 @@ public class Graph {
     ArrayList<Node> nodesList;
     //id    index
     HashMap<Integer , Integer> index;
-
+    HashMap<Integer, Integer> predecessors;
     public Graph(){
         nodesList = new ArrayList<>();
         index = new HashMap<>();
-
+        predecessors = new HashMap<>();
     }
     public void addEdge(int srcId , int dstId){
         Node src = nodesList.get(index.get(srcId));
