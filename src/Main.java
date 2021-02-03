@@ -5,11 +5,12 @@ public class Main {
     public static void main(String[] args){
         File file = new File("map.txt");
         int nodes,edges;
-        Graph graph = new Graph();
+        Graph graph ;
         try(Scanner sc = new Scanner(file)) {
 
             nodes= sc.nextInt();
             edges= sc.nextInt();
+            graph = new Graph(nodes+2);
             for (int i =0;i<nodes;i++){
                 int id = sc.nextInt();
                 double y = sc.nextDouble();
@@ -24,7 +25,14 @@ public class Main {
                 System.out.println(srcid+" "+dstid);
 
             }
-            System.out.println("*");
+            Scanner scanner = new Scanner(System.in);
+            while (true){
+                int time = scanner.nextInt();
+                int src = scanner.nextInt();
+                int dst = scanner.nextInt();
+                Answer answer = graph.dijkstra(src,dst);
+            }
+
         }
         catch (Exception e) {
             e.printStackTrace();

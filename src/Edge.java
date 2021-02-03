@@ -21,6 +21,10 @@ public class Edge {
         traffic--;
         weight = length *(1+0.3*traffic);
     }
+    public void setTrafficToZero(){
+        traffic=0;
+        weight = length *(1+0.3*traffic);
+    }
 
 
 

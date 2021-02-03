@@ -97,4 +97,13 @@ public class MinHeap {
             size--;
         }
     }
+    public void update(Node node) {
+        delete(node.id);
+        insert(node);
+    }
+    public Node deleteMin() {
+        Node min = heap[1];
+        delete(min.id);
+        return min;
+    }
 }
