@@ -1,18 +1,26 @@
+import java.awt.*;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class MinHeap {
 
-    Node[] heap;
-    int size;
+    private Node[] heap;
+    private int size;
     // id   index
-    HashMap<Integer,Integer> in;
-
+    private HashMap<Integer,Integer> in;
+    private static final int FRONT = 1;
+    private ArrayList<Node> nodes;
+    private int max;
     public MinHeap(int max) {
+        this.max =max;
         size = 0;
         heap = new Node[max + 1];
         heap[0] = new Node(-1,0,0);
-        heap[0].distance = Double.MIN_VALUE;
+        heap[0].distance = Double.MIN_EXPONENT;
         in = new HashMap<>();
+        nodes= new ArrayList<>();
     }
 
     private int parent(int index) {
@@ -32,42 +40,32 @@ public class MinHeap {
         heap[first] = heap[second];
         in.put(heap[first].id,first);
         heap[second] = temp;
-        in.put(temp.id,second);
+        in.put(heap[second].id,second);
     }
 
-    private void minHeapify(int id) {
-        int index = in.get(id);
+    private void minHeapify(int index) {
+        //int index = in.get(id);
         if(!leaf(index)) {
             if(heap[index].distance > heap[leftChild(index)].distance || heap[index].distance > heap[rightChild(index)].distance) {
-                if(heap[index].distance > heap[leftChild(index)].distance) {
+                if(heap[rightChild(index)].distance > heap[leftChild(index)].distance) {
                     swap(index, leftChild(index));
                     minHeapify(leftChild(index));
                 }
-                if(heap[index].distance > heap[rightChild(index)].distance) {
+                else{
                     swap(index, rightChild(index));
                     minHeapify(rightChild(index));
                 }
             }
         }
     }
-    private void maxHeapify(int id) {
-        int index = in.get(id);
-        if(!leaf(index)) {
-            if(heap[index].distance < heap[leftChild(index)].distance || heap[index].distance < heap[rightChild(index)].distance) {
-                if(heap[index].distance < heap[leftChild(index)].distance) {
-                    swap(index, leftChild(index));
-                    maxHeapify(leftChild(index));
-                }
-                if(heap[index].distance < heap[rightChild(index)].distance) {
-                    swap(index, rightChild(index));
-                    maxHeapify(rightChild(index));
-                }
-            }
-        }
-    }
+
     public void insert(Node value) {
-        size++;
-        heap[size] = value;
+        if(!nodes.contains(value)){
+            nodes.add(value);
+        }
+
+        //size++;
+        heap[++size] = value;
         int cur = size;
         in.put(value.id,size);
         if(size > 1){
@@ -77,33 +75,67 @@ public class MinHeap {
             }
         }
     }
-    private void createMaxHeap() {
-        for(int pos = (size / 2); pos >= 1; pos--) {
-            maxHeapify(pos);
-        }
-    }
+
     public void delete(int id) {
+//        int index = in.get(id);
+//        heap[index].distance=Double.MIN_VALUE;
+//        while(index !=0 && heap[parent(index)].distance>heap[index].distance){
+//            swap(index,parent(index));
+//            index=parent(index);
+//        }
+//        deleteMin();
+
+//        int index = in.get(id);
+//        heap[index] = heap[size--];
+//        in.remove(id);
+//        in.put(heap[index].id,index);
+//        heap[size+1] = null;
+//        minHeapify(index);
+
         int index = in.get(id);
-        heap[index] = heap[size];
-        in.remove(heap[index]);
-        in.put(heap[size].id,index);
-        size--;
+        swap(index,size);
+        //heap[size--]=null;
         minHeapify(index);
-    }
-    private void heapSort() {
-        for(int x = size; x >= 2 ; x--) {
-            swap(1, x);
-            maxHeapify(1);
-            size--;
-        }
+
+
+//        int index = in.get(id);
+//        heap[index] = heap[size];
+//        in.remove(heap[index].id);
+//        in.put(heap[size].id,index);
+//        size--;
+//        minHeapify(index);
     }
     public void update(Node node) {
+        double distance = node.distance;
         delete(node.id);
+        node.distance = distance;
         insert(node);
     }
     public Node deleteMin() {
-        Node min = heap[1];
-        delete(min.id);
-        return min;
+        Node popped = heap[FRONT];
+        heap[FRONT] = heap[size--];
+        //heap[size+1]=null;
+        in.remove(popped.id);
+        in.put(heap[FRONT].id, FRONT);
+        minHeapify(FRONT);
+        return popped;
+
+//        Node min = heap[0];
+//        delete(min.id);
+//        return min;
     }
+    public void minHeapResetting(){
+        size = 0;
+        heap = new Node[max + 1];
+        heap[0] = new Node(-1,0,0);
+        heap[0].distance = Double.MIN_EXPONENT;
+        in = new HashMap<>();
+        for(Node node:nodes){
+            insert(node);
+        }
+    }
+
+
+
+
 }

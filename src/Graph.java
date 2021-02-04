@@ -35,8 +35,10 @@ public class Graph {
 //                edge.setTrafficToZero();
 //            }
         }
+        unvisited.minHeapResetting();
     }
-    public Answer dijkstra(int srcId , int dstId){
+    public Answer dijkstra(int time,int srcId , int dstId){
+        Node g = nodesList.get(index.get(20));
         graphResetting();
         Node src = nodesList.get(index.get(srcId));
         src.distance=0;
@@ -53,28 +55,62 @@ public class Graph {
                 else {
                     m = e.src;
                 }
-                //m.distance=Math.min(v.distance+e.weight,m.distance);
                 if(v.distance+e.weight<m.distance){
+                    System.out.println("*****m.id:"+m.id);
                     m.distance= v.distance + e.weight ;
                     m.ex = v;
+                    System.out.println("V:"+v.id+" dis: "+v.distance+"  ****************M:"+m.id+"***"+m.distance);
                     unvisited.update(m);
+                    System.out.println("V:"+v.id+" dis: "+v.distance+"  ****************M:"+m.id+"***"+m.distance);
+
                     predecessors.put(m.id,v.id);
                 }
             }
         }
-        ArrayList<Integer> ed = new ArrayList<>();
+        System.out.println("****************DST:"+dst.id+"***"+dst.ex+"*****"+dst.distance);
+        ArrayList<Edge> ed = new ArrayList<>();
         int n = dstId;
         while (n!=srcId){
-            ed.add(n);
-            n=predecessors.get(n);
-        }
-        ed.add(srcId);
-        Collections.reverse(ed);
-        return new Answer(ed,dst.distance*120);
+            int pre;
+            if(n!=srcId){
+                pre =predecessors.get(n);
+                ed.add(nodesList.get(index.get(pre)).adjEdge(n));
 
+            }
+            else{
+                pre = srcId;
+                //ed.add(nodesList.get(index.get(n)).adjEdge(pre));
+
+            }
+            n=pre;
+        }
+        Collections.reverse(ed);
+        ArrayList<Double> times = new ArrayList<>();
+        double t = 0;
+        for(Edge edge: ed){
+            t+=edge.weight;
+            times.add(time+t*120);
+        }
+        System.out.println(dst.id+" "+dst.distance);
+        return new Answer(ed,t*120,times);
     }
 
 }
 
 
+/*
+        6 6
+        10 35.9853606 50.731763
+        15 35.9903606 50.731763
+        20 35.9953606 50.736763
+        25 35.9953606 50.724263
+        30 36.0003606 50.731763
+        35 36.0053606 50.731763
+        10 15
+        15 20
+        15 25
+        20 30
+        25 30
+        30 35
 
+*/

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Node {
     int id ;
@@ -9,7 +10,7 @@ public class Node {
     private ArrayList<Edge> adjacencyList ;
     boolean visited;
     Node ex ;
-    //adj   id
+    //adjID   index
     HashMap<Integer , Integer> index ;
     public Node(int id, double y, double x) {
         this.id = id;
@@ -17,7 +18,7 @@ public class Node {
         this.y = y;
         adjacencyList = new ArrayList<>();
         ex = null;
-        distance = Integer.MAX_VALUE;
+        distance = Double.MAX_EXPONENT;
         visited = false;
         index = new HashMap<>();
     }
@@ -36,5 +37,21 @@ public class Node {
 
     public ArrayList<Edge> getAdjacencyList() {
         return adjacencyList;
+    }
+    public Edge adjEdge(int id){
+        return adjacencyList.get(index.get(id));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Node)) return false;
+        Node node = (Node) o;
+        return id == node.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
