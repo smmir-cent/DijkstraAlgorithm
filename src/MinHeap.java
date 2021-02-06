@@ -16,7 +16,7 @@ public class MinHeap {
     public MinHeap(int max) {
         this.max =max;
         size = 0;
-        heap = new Node[max + 1];
+        heap = new Node[max + 5];
         heap[0] = new Node(-1,0,0);
         heap[0].distance = Double.MIN_EXPONENT;
         in = new HashMap<>();
@@ -45,17 +45,29 @@ public class MinHeap {
 
     private void minHeapify(int index) {
         //int index = in.get(id);
-        if(!leaf(index)) {
-            if(heap[index].distance > heap[leftChild(index)].distance || heap[index].distance > heap[rightChild(index)].distance) {
-                if(heap[rightChild(index)].distance > heap[leftChild(index)].distance) {
-                    swap(index, leftChild(index));
-                    minHeapify(leftChild(index));
-                }
-                else{
-                    swap(index, rightChild(index));
-                    minHeapify(rightChild(index));
-                }
-            }
+//        if(!leaf(index)) {
+//            if(heap[index].distance > heap[leftChild(index)].distance || heap[index].distance > heap[rightChild(index)].distance) {
+//                if(heap[rightChild(index)].distance > heap[leftChild(index)].distance) {
+//                    swap(index, leftChild(index));
+//                    minHeapify(leftChild(index));
+//                }
+//                else if(heap[index].distance > heap[rightChild(index)].distance){
+//                    swap(index, rightChild(index));
+//                    minHeapify(rightChild(index));
+//                }
+//            }
+//        }
+        int left = leftChild(index);
+        int right = rightChild(index);
+        int largest = index;
+        if(left<=size && heap[left].distance<heap[largest].distance)
+            largest=left;
+        if(right<=size && heap[right].distance<heap[largest].distance)
+            largest = right;
+        if(largest!=index)
+        {
+            swap(index, largest);
+            minHeapify(largest);
         }
     }
 
@@ -68,34 +80,36 @@ public class MinHeap {
         heap[++size] = value;
         int cur = size;
         in.put(value.id,size);
-        if(size > 1){
+        //if(size > 1){
             while(heap[cur].distance < heap[parent(cur)].distance) {
                 swap(cur, parent(cur));
                 cur = parent(cur);
             }
-        }
+        //}
     }
 
     public void delete(int id) {
-//        int index = in.get(id);
-//        heap[index].distance=Double.MIN_VALUE;
-//        while(index !=0 && heap[parent(index)].distance>heap[index].distance){
-//            swap(index,parent(index));
-//            index=parent(index);
-//        }
-//        deleteMin();
+        int index = in.get(id);
+        heap[index].distance=Double.MIN_EXPONENT;
+        while(index !=0 && heap[parent(index)].distance>heap[index].distance){
+            swap(index,parent(index));
+            index=parent(index);
+        }
+        deleteMin();
 
 //        int index = in.get(id);
 //        heap[index] = heap[size--];
 //        in.remove(id);
 //        in.put(heap[index].id,index);
-//        heap[size+1] = null;
+//        //heap[size+1] = null;
 //        minHeapify(index);
 
-        int index = in.get(id);
-        swap(index,size);
-        //heap[size--]=null;
-        minHeapify(index);
+//        int index = in.get(id);
+//        swap(index,size--);
+//        //heap[size--]=null;
+//        in.put(heap[index].id,index);
+//        in.remove(heap[size+1].id);
+//        minHeapify(index);
 
 
 //        int index = in.get(id);
@@ -126,9 +140,9 @@ public class MinHeap {
     }
     public void minHeapResetting(){
         size = 0;
-        heap = new Node[max + 1];
+        heap = new Node[max + 5];
         heap[0] = new Node(-1,0,0);
-        heap[0].distance = Double.MIN_EXPONENT;
+        heap[0].distance = -1;
         in = new HashMap<>();
         for(Node node:nodes){
             insert(node);

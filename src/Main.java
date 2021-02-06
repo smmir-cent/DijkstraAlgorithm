@@ -16,7 +16,7 @@ public class Main {
                 double y = sc.nextDouble();
                 double x = sc.nextDouble();
                 graph.addNode(new Node(id,y,x));
-                System.out.println(id+" "+y+" "+x);
+                //System.out.println(id+" "+y+" "+x);
             }
             for (int i =0;i<edges;i++){
                 int srcid = sc.nextInt();
@@ -28,7 +28,7 @@ public class Main {
             Scanner scanner = new Scanner(System.in);
             while (true){
                 System.out.println("**");
-                int time = scanner.nextInt();
+                double time = scanner.nextDouble();
                 int src = scanner.nextInt();
                 int dst = scanner.nextInt();
                 for (Answer answer:answers) {
