@@ -9,7 +9,7 @@ public class MinHeap {
     private Node[] heap;
     private int size;
     // id   index
-    private HashMap<Integer,Integer> in;
+    private HashMap<String,Integer> in;
     private static final int FRONT = 1;
     private ArrayList<Node> nodes;
     private int max;
@@ -17,7 +17,7 @@ public class MinHeap {
         this.max =max;
         size = 0;
         heap = new Node[max + 5];
-        heap[0] = new Node(-1,0,0);
+        heap[0] = new Node("-1",0,0);
         heap[0].distance = Double.MIN_EXPONENT;
         in = new HashMap<>();
         nodes= new ArrayList<>();
@@ -88,7 +88,7 @@ public class MinHeap {
         //}
     }
 
-    public void delete(int id) {
+    public void delete(String id) {
         int index = in.get(id);
         heap[index].distance=Double.MIN_EXPONENT;
         while(index !=0 && heap[parent(index)].distance>heap[index].distance){
@@ -141,7 +141,7 @@ public class MinHeap {
     public void minHeapResetting(){
         size = 0;
         heap = new Node[max + 5];
-        heap[0] = new Node(-1,0,0);
+        heap[0] = new Node("-1",0,0);
         heap[0].distance = -1;
         in = new HashMap<>();
         for(Node node:nodes){

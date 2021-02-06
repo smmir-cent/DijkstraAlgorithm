@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class Node {
-    int id ;
+    String id ;
     double x;
     double y;
     double distance;
@@ -11,8 +11,8 @@ public class Node {
     boolean visited;
     Node ex ;
     //adjID   index
-    HashMap<Integer , Integer> index ;
-    public Node(int id, double y, double x) {
+    HashMap<String , Integer> index ;
+    public Node(String id, double y, double x) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -38,7 +38,7 @@ public class Node {
     public ArrayList<Edge> getAdjacencyList() {
         return adjacencyList;
     }
-    public Edge adjEdge(int id){
+    public Edge adjEdge(String id){
         return adjacencyList.get(index.get(id));
     }
 
@@ -47,7 +47,7 @@ public class Node {
         if (this == o) return true;
         if (!(o instanceof Node)) return false;
         Node node = (Node) o;
-        return id == node.id;
+        return Objects.equals(id, node.id);
     }
 
     @Override
