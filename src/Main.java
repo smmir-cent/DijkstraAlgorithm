@@ -23,17 +23,25 @@ public class Main {
             }
             ArrayList<Answer> answers = new ArrayList<>();
             Scanner scanner = new Scanner(System.in);
+            Runtime.getRuntime().exec("python plotting.py");
+            //String command = "python /c start python script.py";
+            // p = Runtime.getRuntime().exec(command /*+ param*/ );
+            int counter =1;
             while (true){
                 System.out.println("**");
                 String[] s = scanner.nextLine().split(" ");
                 for (Answer answer:answers) {
                     answer.trafficConfig(Double.parseDouble(s[0]));
                 }
+                Answer answer = graph.dijkstra(Double.parseDouble(s[0]),s[1],s[2]);
+                answers.add(answer);
+                Runtime.getRuntime().exec("python  userPlotting.py "+"User"+counter+" "+answer.result);
 
-                answers.add(graph.dijkstra(Double.parseDouble(s[0]),s[1],s[2]));
-                for (Answer answer:answers) {
-                    answer.trafficToZero();
+
+                for (Answer a:answers) {
+                    a.trafficToZero();
                 }
+                counter++;
             }
         }
         catch (Exception e) {

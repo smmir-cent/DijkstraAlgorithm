@@ -6,6 +6,7 @@ public class Answer {
     double totalTime;
     String srcID;
     String dstID;
+    String result;
     public Answer(ArrayList<Edge> edges, double totalTime , ArrayList<Double> times,String srcID,String dstID) {
         this.edges = edges;
         this.totalTime = totalTime;
@@ -13,9 +14,12 @@ public class Answer {
         this.srcID=srcID;
         this.dstID=dstID;
         String temp = edges.get(0).src.id.equals(srcID)? edges.get(0).dst.id :edges.get(0).src.id ;
+        result ="";
+        result+=(srcID+(" "));
         System.out.print(srcID+" ");
         for(int i =0;i<edges.size();i++){
             System.out.print(temp+" ");
+            result+=(temp+(" "));
             if(temp.equals(edges.get(i+1).src.id)){
                 temp = edges.get(i+1).dst.id;
             }
@@ -23,10 +27,10 @@ public class Answer {
                 temp = edges.get(i+1).src.id;
             }
             if(temp.equals(dstID)){
+                result+=(temp+(" "));
                 System.out.print(temp+" ");
                 break;
             }
-
         }
         System.out.println();
 //        for(Double i:times){
@@ -59,9 +63,5 @@ public class Answer {
             edge.setTrafficToZero();
         }
     }
-
-
-
-
 
 }
